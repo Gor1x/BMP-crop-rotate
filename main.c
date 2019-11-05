@@ -12,24 +12,26 @@ int main()
         debug("Failed to open file");
         return -1;
     }
+    fclose(file);
+
 
     readBitmap(&bitmap, file);
     debug("Bitmap is read");
 
-
     Bitmap result;
-    debug("Cropping");
-
-    crop(&bitmap, 0, 0, 256, 256, &result);
+    crop(&bitmap, 100, 100, 256, 256, &result);
+    clearBitmap(&bitmap);
 
     debug("Cropped");
-    FILE* to = fopen("../lena_228.bmp", "wb");
-    saveBitmap(&result, to);
 
-/*
-    clearBitmap(&bitmap);
+    Bitmap rotated;
+    rotate(&result, &rotated);
+    debug("Rotated");
+
+    FILE* to = fopen("../lena_228.bmp", "wb");
+    saveBitmap(&rotated, to);
+    clearBitmap(&rotated);
     clearBitmap(&result);
-    fclose(file);
-    fclose(to);*/
+    fclose(to);
     return  0;
 }

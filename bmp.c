@@ -32,11 +32,9 @@ static void scanSize(Bitmap *bitmap, FILE *file)
 static void initPixelArray(Bitmap *bitmap)
 {
     bitmap->picture = (Pixel**)malloc(bitmap->height * sizeof(Pixel*));
-    bitmap->picture[0] = (Pixel*)malloc(bitmap->height * bitmap->fileWidth * sizeof(Pixel));
-
-    for (size_t i = 1; i < bitmap->height; i++)
+    for (size_t i = 0; i < bitmap->height; i++)
     {
-        bitmap->picture[i] = bitmap->picture[i - 1] + bitmap->fileWidth;
+        bitmap->picture[i] = (Pixel*)malloc(bitmap->fileWidth * sizeof(Pixel));
     }
 }
 
@@ -156,6 +154,7 @@ void saveBitmap(Bitmap *bitmap, FILE *file)
 
 static void clearPicture(Bitmap *bitmap)
 {
+    reverse((void**)bitmap->picture, bitmap->height);
     free(bitmap->picture[0]);
     free(bitmap->picture);
 }
@@ -163,4 +162,24 @@ static void clearPicture(Bitmap *bitmap)
 void clearBitmap(Bitmap *bitmap)
 {
     clearPicture(bitmap);
+}
+
+static void rotatePixels(Bitmap *bitmap, Bitmap *dest)
+{
+    for (size_t i = 0; i < bitmap->height; i++)
+    {
+        for (size_t j = 0; j < bitmap->fileWidth; j++)
+        {
+            dest->picture[bitmap->fileWidth - j - 1][i] = bitmap->picture[i][j];
+        }
+    }
+}
+
+void rotate(Bitmap* bitmap, Bitmap *dest)
+{
+    initBitmapSize(dest, bitmap->height, bitmap->width);
+    initBitmapHeader(bitmap, dest);
+    initPixelArray(dest);
+    rotatePixels(bitmap, dest);
+
 }

@@ -70,4 +70,9 @@ static void clearPicture(Bitmap *bitmap);
 
 void clearBitmap(Bitmap *bitmap);
 
+
+static void rotatePixels(Bitmap *bitmap, Bitmap *dest);
+
+void rotate(Bitmap* bitmap, Bitmap *dest);
+
 #endif //HW_01_BMP_H
