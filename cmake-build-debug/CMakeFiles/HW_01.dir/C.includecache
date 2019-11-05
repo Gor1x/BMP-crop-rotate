@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/egor/CLionProjects/HW_01/libbmp.h
+stddef.h
+/home/egor/CLionProjects/HW_01/stddef.h
+stdio.h
+/home/egor/CLionProjects/HW_01/stdio.h
+stdlib.h
+/home/egor/CLionProjects/HW_01/stdlib.h
+
+/home/egor/CLionProjects/HW_01/main.c
+libbmp.h
+/home/egor/CLionProjects/HW_01/libbmp.h
+stdio.h
+/home/egor/CLionProjects/HW_01/stdio.h
+
