@@ -58,7 +58,13 @@ static void reverse(void **arr, size_t length)
 static void scanPicture(Bitmap *bitmap, FILE *file)
 {
     fseek(file, 54, SEEK_SET);
-    fread(bitmap->picture[0], PIXEL_SIZE, bitmap->height * bitmap->fileWidth, file);
+    for (size_t i = 0; i < bitmap->height; i++)
+    {
+        for (size_t j = 0; j < bitmap->fileWidth; j++)
+        {
+            fread(&bitmap->picture[i][j], PIXEL_SIZE, 1, file);
+        }
+    }
     reverse((void **)bitmap->picture, bitmap->height);
 }
 
@@ -98,8 +104,8 @@ static void initBitmapHeader(Bitmap *bitmap, Bitmap *dest)
     size_t fileSize = pixelSize + 54;
     memcpy(&dest->header.bfSizeFile, &fileSize, sizeof(dest->header.bfSizeFile));
 
-    memcpy(&dest->header.biHeight, &dest->height, sizeof(dest->height));
-    memcpy(&dest->header.biWidth, &dest->width, sizeof(dest->width));
+    memcpy(&dest->header.biHeight, &dest->height, sizeof(dest->header.biHeight));
+    memcpy(&dest->header.biWidth, &dest->width, sizeof(dest->header.biWidth));
 }
 
 int crop(Bitmap *bitmap, size_t x, size_t y, size_t width, size_t height, Bitmap *dest)
@@ -128,8 +134,17 @@ static void printHeader(Bitmap *bitmap, FILE *file)
 
 static void printPicture(Bitmap *bitmap, FILE *file)
 {
+    fseek(file, 54, SEEK_SET);
     reverse((void**)bitmap->picture, bitmap->height);
-    fwrite(bitmap->picture, PIXEL_SIZE, bitmap->fileWidth * bitmap->height, file);
+
+    for (size_t i = 0; i < bitmap->height; i++)
+    {
+        for (size_t j = 0; j < bitmap->fileWidth; j++)
+        {
+            fwrite(&bitmap->picture[i][j], PIXEL_SIZE, 1, file);
+        }
+    }
+
     reverse((void**)bitmap->picture, bitmap->height);
 }
 

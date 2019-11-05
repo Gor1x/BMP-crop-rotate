@@ -20,16 +20,16 @@ int main()
     Bitmap result;
     debug("Cropping");
 
-    crop(&bitmap, 0, 0, 512, 512, &result);
+    crop(&bitmap, 0, 0, 256, 256, &result);
 
     debug("Cropped");
     FILE* to = fopen("../lena_228.bmp", "wb");
     saveBitmap(&result, to);
 
-
+/*
     clearBitmap(&bitmap);
     clearBitmap(&result);
     fclose(file);
-    fclose(to);
+    fclose(to);*/
     return  0;
 }
