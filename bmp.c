@@ -1,4 +1,4 @@
-#include "libbmp.h"
+#include "bmp.h"
 
 static void scanHeader(Bitmap *bitmap, FILE *file)
 {
@@ -94,15 +94,24 @@ static void initBitmapHeader(Bitmap *bitmap, Bitmap *dest)
     size_t pixelSize = dest->fileWidth * dest->height;
     memcpy(&dest->header.biSizeImage, &pixelSize, sizeof(dest->header.biSizeImage));
 
-    size_t fileSize = pixelSize +
+    size_t fileSize = pixelSize + 54;
+    memcpy(&dest->header.bfSizeFile, &fileSize, sizeof(dest->header.bfSizeFile));
 
+    memcpy(&dest->height, &dest->height, sizeof(dest->height));
+    memcpy(&dest->width, &dest->width, sizeof(dest->width));
 }
 
-int cropBitmap(Bitmap *bitmap, size_t x, size_t y, size_t width, size_t height, Bitmap *dest)
+int crop(Bitmap *bitmap, size_t x, size_t y, size_t width, size_t height, Bitmap *dest)
 {
+    initBitmapHeader(bitmap, dest);
     initBitmapSize(bitmap, width, height);
     initPixelArray(dest);
     copyPixelArray(bitmap, dest, x, y, width, height);
-    initBitmapHeader(bitmap, dest);
     return 0;
+}
+
+
+void saveBitmap(Bitmap *bitmap, FILE *file)
+{
+
 }

@@ -123,32 +123,32 @@ HW_01/fast:
 	$(MAKE) -f CMakeFiles/HW_01.dir/build.make CMakeFiles/HW_01.dir/build
 .PHONY : HW_01/fast
 
-libbmp.o: libbmp.c.o
+bmp.o: bmp.c.o
 
-.PHONY : libbmp.o
+.PHONY : bmp.o
 
 # target to build an object file
-libbmp.c.o:
-	$(MAKE) -f CMakeFiles/HW_01.dir/build.make CMakeFiles/HW_01.dir/libbmp.c.o
-.PHONY : libbmp.c.o
+bmp.c.o:
+	$(MAKE) -f CMakeFiles/HW_01.dir/build.make CMakeFiles/HW_01.dir/bmp.c.o
+.PHONY : bmp.c.o
 
-libbmp.i: libbmp.c.i
+bmp.i: bmp.c.i
 
-.PHONY : libbmp.i
+.PHONY : bmp.i
 
 # target to preprocess a source file
-libbmp.c.i:
-	$(MAKE) -f CMakeFiles/HW_01.dir/build.make CMakeFiles/HW_01.dir/libbmp.c.i
-.PHONY : libbmp.c.i
+bmp.c.i:
+	$(MAKE) -f CMakeFiles/HW_01.dir/build.make CMakeFiles/HW_01.dir/bmp.c.i
+.PHONY : bmp.c.i
 
-libbmp.s: libbmp.c.s
+bmp.s: bmp.c.s
 
-.PHONY : libbmp.s
+.PHONY : bmp.s
 
 # target to generate assembly for a file
-libbmp.c.s:
-	$(MAKE) -f CMakeFiles/HW_01.dir/build.make CMakeFiles/HW_01.dir/libbmp.c.s
-.PHONY : libbmp.c.s
+bmp.c.s:
+	$(MAKE) -f CMakeFiles/HW_01.dir/build.make CMakeFiles/HW_01.dir/bmp.c.s
+.PHONY : bmp.c.s
 
 main.o: main.c.o
 
@@ -186,9 +186,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... HW_01"
 	@echo "... edit_cache"
-	@echo "... libbmp.o"
-	@echo "... libbmp.i"
-	@echo "... libbmp.s"
+	@echo "... bmp.o"
+	@echo "... bmp.i"
+	@echo "... bmp.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

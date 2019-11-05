@@ -3,4 +3,4 @@ project(HW_01 C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(HW_01 main.c libbmp.h libbmp.c)
+add_executable(HW_01 main.c bmp.h bmp.c)

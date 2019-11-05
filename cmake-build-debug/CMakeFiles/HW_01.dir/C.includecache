@@ -6,21 +6,23 @@
 
 #IncludeRegexTransform: 
 
-/home/egor/CLionProjects/HW_01/libbmp.c
-libbmp.h
-/home/egor/CLionProjects/HW_01/libbmp.h
+/home/egor/CLionProjects/HW_01/bmp.c
+bmp.h
+/home/egor/CLionProjects/HW_01/bmp.h
 
-/home/egor/CLionProjects/HW_01/libbmp.h
+/home/egor/CLionProjects/HW_01/bmp.h
 stddef.h
 /home/egor/CLionProjects/HW_01/stddef.h
 stdio.h
 /home/egor/CLionProjects/HW_01/stdio.h
 stdlib.h
 /home/egor/CLionProjects/HW_01/stdlib.h
+string.h
+/home/egor/CLionProjects/HW_01/string.h
 
 /home/egor/CLionProjects/HW_01/main.c
-libbmp.h
-/home/egor/CLionProjects/HW_01/libbmp.h
+bmp.h
+/home/egor/CLionProjects/HW_01/bmp.h
 stdio.h
 /home/egor/CLionProjects/HW_01/stdio.h
 

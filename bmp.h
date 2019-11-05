@@ -2,8 +2,8 @@
 // Created by egor on 05.11.2019.
 //
 
-#ifndef HW_01_LIBBMP_H
-#define HW_01_LIBBMP_H
+#ifndef HW_01_BMP_H
+#define HW_01_BMP_H
 
 #include "stddef.h"
 #include "stdio.h"
@@ -19,13 +19,18 @@ typedef struct Pixel_s
 
 typedef struct BitmapData_s
 {
+    //HEADER
     char bfType[2];
-    char bfSizeFile[4];
-    char bfHeaderOtherFirst[12]; //bfReserved1, bfReserved2, bfOffBits, biSize
+    char bfSizeFile[4]; //Changing
+
+    //BOTH
+    char bfHeaderOtherFirst[12];
+
+    //INFO
     char biWidth[4];
     char biHeight[4];
     char biOtherFirst[8]; //biPlanes, biBitCount, biCompression
-    char biSizeImage[4];
+    char biSizeImage[4]; //Changing
     char biOtherSecond[16]; //biXPelsPerMeters, biYPelsPerMeter, biClrUsed, biClrImportant
 } BitmapData;
 
@@ -54,8 +59,9 @@ static void copyPixelArray(Bitmap *bitmap, Bitmap *dest, size_t x, size_t y, siz
 static void initBitmapSize(Bitmap *bitmap, size_t width, size_t height);
 static void initBitmapHeader(Bitmap *bitmap, Bitmap *dest);
 
-int cropBitmap(Bitmap *bitmap, size_t x, size_t y, size_t width, size_t height, Bitmap *dest);
+
+int crop(Bitmap *bitmap, size_t x, size_t y, size_t width, size_t height, Bitmap *dest);
 
 
 
-#endif //HW_01_LIBBMP_H
+#endif //HW_01_BMP_H
