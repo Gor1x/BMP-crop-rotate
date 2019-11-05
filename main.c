@@ -12,11 +12,12 @@ int main()
         debug("Failed to open file");
         return -1;
     }
-    fclose(file);
+
 
 
     readBitmap(&bitmap, file);
     debug("Bitmap is read");
+    fclose(file);
 
     Bitmap result;
     crop(&bitmap, 100, 100, 256, 256, &result);
