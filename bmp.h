@@ -8,7 +8,7 @@
 
 #define PIXEL_SIZE 3
 
-#define debug(x) printf(x)
+#define debug(x) printf("DEBUG: "); printf(x); printf("\n"); fflush(stdout);
 
 typedef struct Pixel_s
 {
