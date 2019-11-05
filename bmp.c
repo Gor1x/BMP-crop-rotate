@@ -34,7 +34,7 @@ static void initPixelArray(Bitmap *bitmap)
     bitmap->picture = (Pixel**)malloc(bitmap->height * sizeof(Pixel*));
     for (size_t i = 0; i < bitmap->height; i++)
     {
-        bitmap->picture[i] = (Pixel*)malloc(bitmap->fileWidth * sizeof(Pixel));
+        bitmap->picture[i] = (Pixel*)calloc(bitmap->fileWidth, sizeof(Pixel));
     }
 }
 
@@ -168,9 +168,9 @@ static void rotatePixels(Bitmap *bitmap, Bitmap *dest)
 {
     for (size_t i = 0; i < bitmap->height; i++)
     {
-        for (size_t j = 0; j < bitmap->fileWidth; j++)
+        for (size_t j = 0; j < bitmap->width; j++)
         {
-            dest->picture[bitmap->fileWidth - j - 1][i] = bitmap->picture[i][j];
+            dest->picture[bitmap->width - j - 1][i] = bitmap->picture[i][j];
         }
     }
 }

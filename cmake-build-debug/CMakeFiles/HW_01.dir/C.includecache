@@ -17,6 +17,8 @@ string.h
 /home/egor/CLionProjects/HW_01/string.h
 
 /home/egor/CLionProjects/HW_01/main.c
+stdbool.h
+/home/egor/CLionProjects/HW_01/stdbool.h
 bmp.h
 /home/egor/CLionProjects/HW_01/bmp.h
 stdio.h
