@@ -110,8 +110,39 @@ int crop(Bitmap *bitmap, size_t x, size_t y, size_t width, size_t height, Bitmap
     return 0;
 }
 
+static void printHeader(Bitmap *bitmap, FILE *file)
+{
+    BitmapData *header = &bitmap->header;
+
+    fwrite(&header->bfType, sizeof(header->bfType), 1, file);
+    fwrite(&header->bfSizeFile, sizeof(header->bfSizeFile), 1, file);
+    fwrite(&header->bfHeaderOtherFirst, sizeof(header->bfHeaderOtherFirst), 1, file);
+
+    fwrite(&header->biWidth, sizeof(header->biWidth), 1, file);
+    fwrite(&header->biHeight, sizeof(header->biHeight), 1, file);
+    fwrite(&header->biOtherFirst, sizeof(header->biOtherFirst), 1, file);
+    fwrite(&header->biSizeImage, sizeof(header->biSizeImage), 1, file);
+    fwrite(&header->biOtherSecond, sizeof(header->biOtherSecond), 1, file);
+}
+
+static void printPicture(Bitmap *bitmap, FILE *file)
+{
+    fwrite(bitmap->picture, PIXEL_SIZE, bitmap->fileWidth * bitmap->height, file);
+}
 
 void saveBitmap(Bitmap *bitmap, FILE *file)
 {
+    printHeader(bitmap, file);
+    printPicture(bitmap, file);
+}
 
+static void clearPicture(Bitmap *bitmap)
+{
+    free(bitmap->picture[0]);
+    free(bitmap->picture);
+}
+
+void clearBitmap(Bitmap *bitmap)
+{
+    clearPicture(bitmap);
 }

@@ -10,5 +10,8 @@ int main()
     Bitmap result;
     crop(&bitmap, 0, 0, 512, 512, &result);
 
+    FILE* to = fopen("../lena_228.bmp", "wb");
+    saveBitmap(&result, to);
+
     return  0;
 }

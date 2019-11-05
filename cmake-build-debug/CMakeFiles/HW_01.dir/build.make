@@ -70,29 +70,29 @@ CMakeFiles/HW_01.dir/main.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/HW_01.dir/main.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/egor/CLionProjects/HW_01/main.c -o CMakeFiles/HW_01.dir/main.c.s
 
-CMakeFiles/HW_01.dir/libbmp.c.o: CMakeFiles/HW_01.dir/flags.make
-CMakeFiles/HW_01.dir/libbmp.c.o: ../libbmp.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/egor/CLionProjects/HW_01/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/HW_01.dir/libbmp.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/HW_01.dir/libbmp.c.o   -c /home/egor/CLionProjects/HW_01/libbmp.c
+CMakeFiles/HW_01.dir/bmp.c.o: CMakeFiles/HW_01.dir/flags.make
+CMakeFiles/HW_01.dir/bmp.c.o: ../bmp.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/egor/CLionProjects/HW_01/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/HW_01.dir/bmp.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/HW_01.dir/bmp.c.o   -c /home/egor/CLionProjects/HW_01/bmp.c
 
-CMakeFiles/HW_01.dir/libbmp.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/HW_01.dir/libbmp.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/egor/CLionProjects/HW_01/libbmp.c > CMakeFiles/HW_01.dir/libbmp.c.i
+CMakeFiles/HW_01.dir/bmp.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/HW_01.dir/bmp.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/egor/CLionProjects/HW_01/bmp.c > CMakeFiles/HW_01.dir/bmp.c.i
 
-CMakeFiles/HW_01.dir/libbmp.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/HW_01.dir/libbmp.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/egor/CLionProjects/HW_01/libbmp.c -o CMakeFiles/HW_01.dir/libbmp.c.s
+CMakeFiles/HW_01.dir/bmp.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/HW_01.dir/bmp.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/egor/CLionProjects/HW_01/bmp.c -o CMakeFiles/HW_01.dir/bmp.c.s
 
 # Object files for target HW_01
 HW_01_OBJECTS = \
 "CMakeFiles/HW_01.dir/main.c.o" \
-"CMakeFiles/HW_01.dir/libbmp.c.o"
+"CMakeFiles/HW_01.dir/bmp.c.o"
 
 # External object files for target HW_01
 HW_01_EXTERNAL_OBJECTS =
 
 HW_01: CMakeFiles/HW_01.dir/main.c.o
-HW_01: CMakeFiles/HW_01.dir/libbmp.c.o
+HW_01: CMakeFiles/HW_01.dir/bmp.c.o
 HW_01: CMakeFiles/HW_01.dir/build.make
 HW_01: CMakeFiles/HW_01.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/egor/CLionProjects/HW_01/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking C executable HW_01"

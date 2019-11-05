@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/egor/CLionProjects/HW_01/libbmp.c" "/home/egor/CLionProjects/HW_01/cmake-build-debug/CMakeFiles/HW_01.dir/libbmp.c.o"
+  "/home/egor/CLionProjects/HW_01/bmp.c" "/home/egor/CLionProjects/HW_01/cmake-build-debug/CMakeFiles/HW_01.dir/bmp.c.o"
   "/home/egor/CLionProjects/HW_01/main.c" "/home/egor/CLionProjects/HW_01/cmake-build-debug/CMakeFiles/HW_01.dir/main.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")

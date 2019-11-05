@@ -1,7 +1,3 @@
-//
-// Created by egor on 05.11.2019.
-//
-
 #ifndef HW_01_BMP_H
 #define HW_01_BMP_H
 
@@ -11,6 +7,8 @@
 #include "string.h"
 
 #define PIXEL_SIZE 3
+
+#define debug(x) printf(x)
 
 typedef struct Pixel_s
 {
@@ -59,9 +57,17 @@ static void copyPixelArray(Bitmap *bitmap, Bitmap *dest, size_t x, size_t y, siz
 static void initBitmapSize(Bitmap *bitmap, size_t width, size_t height);
 static void initBitmapHeader(Bitmap *bitmap, Bitmap *dest);
 
-
 int crop(Bitmap *bitmap, size_t x, size_t y, size_t width, size_t height, Bitmap *dest);
 
 
+static void printHeader(Bitmap *bitmap, FILE *file);
+static void printPicture(Bitmap *bitmap, FILE *file);
+
+void saveBitmap(Bitmap *bitmap, FILE *file);
+
+
+static void clearPicture(Bitmap *bitmap);
+
+void clearBitmap(Bitmap *bitmap);
 
 #endif //HW_01_BMP_H
