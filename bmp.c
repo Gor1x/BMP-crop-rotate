@@ -181,5 +181,4 @@ void rotate(Bitmap* bitmap, Bitmap *dest)
     initBitmapHeader(bitmap, dest);
     initPixelArray(dest);
     rotatePixels(bitmap, dest);
-
 }
