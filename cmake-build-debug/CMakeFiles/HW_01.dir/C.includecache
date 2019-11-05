@@ -6,6 +6,10 @@
 
 #IncludeRegexTransform: 
 
+/home/egor/CLionProjects/HW_01/libbmp.c
+libbmp.h
+/home/egor/CLionProjects/HW_01/libbmp.h
+
 /home/egor/CLionProjects/HW_01/libbmp.h
 stddef.h
 /home/egor/CLionProjects/HW_01/stddef.h
