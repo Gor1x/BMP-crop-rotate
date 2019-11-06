@@ -43,40 +43,17 @@ typedef struct Bitmap_s
 } Bitmap;
 
 
-static void scanHeader(Bitmap *bitmap, FILE *file);
-static void scanSize(Bitmap *bitmap, FILE *file);
-static void initPixelArray(Bitmap *bitmap);
-static void scanPicture(Bitmap *bitmap, FILE *file);
-static void reverse(Pixel **arr, size_t height, size_t width);
-
 void readBitmap(Bitmap *bitmap, FILE *file);
-
-static void copyPixelArray(const Bitmap *bitmap, Bitmap *dest, size_t x, size_t y, size_t width, size_t height);
-static void initBitmapSize(Bitmap *bitmap, size_t width, size_t height);
-static void initBitmapHeader(const Bitmap *bitmap, Bitmap *dest);
 
 void crop(const Bitmap *bitmap, size_t x, size_t y, size_t width, size_t height, Bitmap *dest);
 
-
-static void printZeros(size_t count, FILE *file);
-static void printHeader(const Bitmap *bitmap, FILE *file);
-static void printPicture(const Bitmap *bitmap, FILE *file);
-
 void saveBitmap(const Bitmap *bitmap, FILE *file);
-
-
-static void clearPicture(Bitmap *bitmap);
 
 void clearBitmap(Bitmap *bitmap);
 
-
-static void rotatePixels(const Bitmap *bitmap, Bitmap *dest);
-
 void rotate(const Bitmap* bitmap, Bitmap *dest);
 
-
 //Needed for debug
-static void printPixel(Pixel a, FILE *file);
-void printPixelArray(Bitmap *bitmap, FILE *file);
+void printBitmapPixelArray(Bitmap *bitmap, FILE *file);
 
 #endif //HW_01_BMP_H

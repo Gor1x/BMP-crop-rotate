@@ -7,7 +7,7 @@ static void error(const char *type)
     printf("Error: %s\n", type);
 }
 
-static bool isCorrectArgs(int argc, char **argv)
+static bool isCorrectArgs(int argc)
 {
     if (argc < 2)
         return false;
@@ -31,18 +31,17 @@ static void getParams(size_t *x, size_t *y, size_t *width, size_t *height, char 
 
 static bool isCorrectParameters(Bitmap *bitmap, size_t x, size_t y, size_t width, size_t height)
 {
-    return x >= 0 && y >= 0 && width >= 0 && height >= 0 &&
-                                        x + width <= bitmap->width && y + height <= bitmap->height;
+    return x + width <= bitmap->width && y + height <= bitmap->height;
 }
 
-static bool isCorrectCropRotateArgs(int argc, char **argv)
+static bool isCorrectCropRotateArgs(int argc)
 {
     return argc == 8;
 }
 
 int cropRotate(int argc, char **argv)
 {
-    if (!isCorrectCropRotateArgs(argc, argv))
+    if (!isCorrectCropRotateArgs(argc))
     {
         error("Not enough required parameters for crop-rotate");
         return 4;
@@ -96,7 +95,7 @@ int cropRotate(int argc, char **argv)
 
 int main(int argc, char **argv)
 {
-    if (!isCorrectArgs(argc, argv))
+    if (!isCorrectArgs(argc))
     {
         error("Not enough required parameters");
         return -1;

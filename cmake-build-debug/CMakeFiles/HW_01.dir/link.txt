@@ -1,1 +1,1 @@
-/usr/bin/cc -g   CMakeFiles/HW_01.dir/main.c.o CMakeFiles/HW_01.dir/bmp.c.o  -o HW_01 
+/usr/bin/cc  -Werror -Wall -Wextra -pedantic -g   CMakeFiles/HW_01.dir/main.c.o CMakeFiles/HW_01.dir/bmp.c.o  -o HW_01 

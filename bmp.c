@@ -45,7 +45,7 @@ static void printPixel(Pixel a, FILE *file)
     fprintf(file, " ");
 }
 
-void printPixelArray(Bitmap *bitmap, FILE *file)
+void printBitmapPixelArray(Bitmap *bitmap, FILE *file)
 {
     size_t height = bitmap->height;
     size_t width = bitmap->width;
@@ -84,7 +84,7 @@ static void scanPicture(Bitmap *bitmap, FILE *file)
         {
             fread(&bitmap->picture[i][j], PIXEL_SIZE, 1, file);
         }
-        fseek(file, bitmap->widthBytes - bitmap->width * 3, SEEK_CUR);
+        fseek(file, (int)bitmap->widthBytes - (int)bitmap->width * 3, SEEK_CUR);
     }
     reverse(bitmap->picture, bitmap->height, bitmap->width);
 }
