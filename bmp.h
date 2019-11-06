@@ -12,7 +12,7 @@
 
 typedef struct Pixel_s
 {
-    char data[PIXEL_SIZE];
+    unsigned char data[PIXEL_SIZE];
 } Pixel;
 
 typedef struct BitmapData_s

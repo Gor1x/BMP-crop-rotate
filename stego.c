@@ -16,11 +16,11 @@ static int getBit(const Pixel* pixel, char color)
 {
     size_t pos;
     if (color == 'R')
-        pos = 0;
+        pos = 2;
     else if (color == 'G')
         pos = 1;
     else
-        pos = 2;
+        pos = 0;
     return (pixel->data[pos] & 1);
 }
 
@@ -65,7 +65,7 @@ static int setBit(Pixel *pixel, char color, int bit)
     size_t pos;
     if (color == 'R')
     {
-        pos = 0;
+        pos = 2;
     }
     else if (color == 'G')
     {
@@ -73,7 +73,7 @@ static int setBit(Pixel *pixel, char color, int bit)
     }
     else
     {
-        pos = 2;
+        pos = 0;
     }
 
     if (bit == 0)
