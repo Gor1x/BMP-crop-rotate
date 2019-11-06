@@ -2,6 +2,7 @@
 #define HW_01_STEGO_H
 
 #include "bmp.h"
+#include "stdbool.h"
 
 int insertStegoData(Bitmap *bitmap, FILE* message, FILE *key);
 

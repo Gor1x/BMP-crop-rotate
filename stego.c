@@ -12,10 +12,40 @@ static char getSymbol(int x)
         return ',';
 }
 
+static int getBit(const Pixel* pixel, char color)
+{
+    size_t pos;
+    if (color == 'R')
+        pos = 0;
+    else if (color == 'G')
+        pos = 1;
+    else
+        pos = 2;
+    return (pixel->data[pos] & 1);
+}
+
 void extractStegoData(const Bitmap *bitmap, FILE *key, FILE *message)
 {
     size_t x, y;
     char color;
+    while (true)
+    {
+        int a = 0;
+
+        bool isEnd = false;
+        for (size_t j = 0; j < 5; j++)
+        {
+            if (fscanf(key, "%zu %zu %c", &x, &y, &color) != 3)
+            {
+                isEnd = true;
+                break;
+            }
+            a |= (getBit(&bitmap->picture[y][x], color) << j);
+        }
+        if (isEnd)
+            break;
+        fprintf(message, "%c", getSymbol(a));
+    }
 }
 
 static int getCode(char x)
@@ -76,6 +106,7 @@ static int write(Bitmap *bitmap, int number, FILE *key)
         }
         setBit(&bitmap->picture[y][x], color, bit);
     }
+    return 0;
 }
 
 int insertStegoData(Bitmap *bitmap, FILE* message, FILE *key)

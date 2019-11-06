@@ -178,16 +178,40 @@ static bool isEraseParamsCorrect(int argc)
     return argc == 5;
 }
 
-static int erase(int argc, char **argv)
+static int extract(int argc, char **argv)
 {
     if (!isEraseParamsCorrect(argc))
     {
         error("Not enough required parameters for erase");
         return 1;
     }
-    Bitmap bitmap;
-    getBitmapFromFile(&bitmap, argv[2]);
 
+    Bitmap bitmap;
+    if (getBitmapFromFile(&bitmap, argv[2]) != 0)
+        return 1;
+
+    FILE *key = fopen(argv[3], "r");
+    if (key == NULL)
+    {
+        clearBitmap(&bitmap);
+        error("Can't open key file");
+        return 1;
+    }
+
+    FILE *message = fopen(argv[4], "w");
+    if (message == NULL)
+    {
+        clearBitmap(&bitmap);
+        fclose(key);
+        error("Can't open message file");
+        return 1;
+    }
+
+    extractStegoData(&bitmap, key, message);
+    fclose(key);
+    fclose(message);
+    clearBitmap(&bitmap);
+    return 0;
 }
 
 int main(int argc, char **argv)
@@ -214,7 +238,7 @@ int main(int argc, char **argv)
     }
     else //extract
     {
-
+        extract(argc, argv);
         printf("Your secrets was found");
     }
     return  0;
