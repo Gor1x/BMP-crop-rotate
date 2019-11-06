@@ -43,15 +43,15 @@ typedef struct Bitmap_s
 } Bitmap;
 
 
-void readBitmap(Bitmap *bitmap, FILE *file);
+int readBitmap(Bitmap *bitmap, FILE *file);
 
-void crop(const Bitmap *bitmap, size_t x, size_t y, size_t width, size_t height, Bitmap *dest);
+int crop(const Bitmap *bitmap, size_t x, size_t y, size_t width, size_t height, Bitmap *dest);
 
 void saveBitmap(const Bitmap *bitmap, FILE *file);
 
 void clearBitmap(Bitmap *bitmap);
 
-void rotate(const Bitmap* bitmap, Bitmap *dest);
+int rotate(const Bitmap* bitmap, Bitmap *dest);
 
 //Needed for debug
 void printBitmapPixelArray(Bitmap *bitmap, FILE *file);

@@ -29,13 +29,35 @@ static void scanSize(Bitmap *bitmap, FILE *file)
     bitmap->widthBytes = (bitmap->width * 3 + 3) / 4 * 4;
 }
 
-static void initPixelArray(Bitmap *bitmap)
+
+
+static void freePictureMemory(Bitmap *bitmap, size_t to)
+{
+    for (size_t j = 0; j < to; j++)
+    {
+        free(bitmap->picture[j]);
+    }
+    free(bitmap->picture);
+}
+
+static int initPixelArray(Bitmap *bitmap)
 {
     bitmap->picture = (Pixel**)malloc(bitmap->height * sizeof(Pixel*));
+
+    if (bitmap->picture == NULL)
+        return 1;
+
     for (size_t i = 0; i < bitmap->height; i++)
     {
         bitmap->picture[i] = (Pixel*)calloc(bitmap->widthBytes, sizeof(Pixel));
+        if (bitmap->picture[i] == NULL)
+        {
+            freePictureMemory(bitmap, i);
+            return 1;
+        }
     }
+
+    return 0;
 }
 
 static void printPixel(Pixel a, FILE *file)
@@ -89,12 +111,16 @@ static void scanPicture(Bitmap *bitmap, FILE *file)
     reverse(bitmap->picture, bitmap->height, bitmap->width);
 }
 
-void readBitmap(Bitmap *bitmap, FILE *file)
+int readBitmap(Bitmap *bitmap, FILE *file)
 {
     scanHeader(bitmap, file);
     scanSize(bitmap, file);
-    initPixelArray(bitmap);
+    if (initPixelArray(bitmap) != 0)
+    {
+        return 1;
+    }
     scanPicture(bitmap, file);
+    return 0;
 }
 
 static void copyPixelArray(const Bitmap *bitmap, Bitmap *dest, size_t x, size_t y, size_t width, size_t height)
@@ -130,12 +156,16 @@ static void initBitmapHeader(const Bitmap *bitmap, Bitmap *dest)
     memcpy(&dest->header.biHeight, &dest->height, sizeof(dest->header.biHeight));
 }
 
-void crop(const Bitmap *bitmap, size_t x, size_t y, size_t width, size_t height, Bitmap *dest)
+int crop(const Bitmap *bitmap, size_t x, size_t y, size_t width, size_t height, Bitmap *dest)
 {
     initBitmapSize(dest, width, height);
     initBitmapHeader(bitmap, dest);
-    initPixelArray(dest);
+    if (initPixelArray(dest) != 0)
+    {
+        return 1;
+    }
     copyPixelArray(bitmap, dest, x, y, width, height);
+    return 0;
 }
 
 static void printHeader(const Bitmap *bitmap, FILE *file)
@@ -183,15 +213,9 @@ void saveBitmap(const Bitmap *bitmap, FILE *file)
     printPicture(bitmap, file);
 }
 
-static void clearPicture(Bitmap *bitmap)
-{
-    free(bitmap->picture[0]);
-    free(bitmap->picture);
-}
-
 void clearBitmap(Bitmap *bitmap)
 {
-    clearPicture(bitmap);
+    freePictureMemory(bitmap, bitmap->height);
 }
 
 static void rotatePixels(const Bitmap *bitmap, Bitmap *dest)
@@ -205,10 +229,16 @@ static void rotatePixels(const Bitmap *bitmap, Bitmap *dest)
     }
 }
 
-void rotate(const Bitmap* bitmap, Bitmap *dest)
+int rotate(const Bitmap* bitmap, Bitmap *dest)
 {
     initBitmapSize(dest, bitmap->height, bitmap->width);
     initBitmapHeader(bitmap, dest);
-    initPixelArray(dest);
+
+    if (initPixelArray(dest) != 0)
+    {
+        return 1;
+    }
+
     rotatePixels(bitmap, dest);
+    return 0;
 }

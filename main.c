@@ -28,7 +28,6 @@ static void getParams(size_t *x, size_t *y, size_t *width, size_t *height, char 
     *height = toInt(argv[7]);
 }
 
-
 static bool isCorrectParameters(Bitmap *bitmap, size_t x, size_t y, size_t width, size_t height)
 {
     return x + width <= bitmap->width && y + height <= bitmap->height;
@@ -39,10 +38,8 @@ static bool isCorrectCropRotateArgs(int argc)
     return argc == 8;
 }
 
-int cropRotate(int argc, char **argv)
-{
-    if (!isCorrectCropRotateArgs(argc))
-    {
+int cropRotate(int argc, char **argv) {
+    if (!isCorrectCropRotateArgs(argc)) {
         error("Not enough required parameters for crop-rotate");
         return 4;
     }
@@ -50,13 +47,18 @@ int cropRotate(int argc, char **argv)
     Bitmap bitmap;
     FILE *file = fopen(argv[2], "rb");
 
-    if (file == NULL)
-    {
+    if (file == NULL) {
         error("Can't open input file");
         return 1;
     }
 
-    readBitmap(&bitmap, file);
+    if (readBitmap(&bitmap, file) != 0)
+    {
+        fclose(file);
+        error("Memory allocation failed");
+        return 7;
+    }
+
     fclose(file);
 
     Bitmap result;
@@ -70,23 +72,32 @@ int cropRotate(int argc, char **argv)
         return 3;
     }
 
-    crop(&bitmap, x, y, width, height, &result);
-    clearBitmap(&bitmap);
+    if (crop(&bitmap, x, y, width, height, &result) != 0)
+    {
+        error("Memory allocation failed");
+        clearBitmap(&bitmap);
+        return 7;
+    }
+
+    Bitmap rotated;
+
+    if (rotate(&result, &rotated) != 0)
+    {
+        clearBitmap(&result);
+        error("Memory allocation failed");
+        return 7;
+    }
+    clearBitmap(&result);
 
     FILE *to = fopen(argv[3], "wb");
     if (to == NULL)
     {
+        clearBitmap(&rotated);
         error("Can't open output file");
-        clearBitmap(&result);
-        return 2;
+        return 1;
     }
 
-    Bitmap rotated;
-    rotate(&result, &rotated);
-    clearBitmap(&result);
-
     saveBitmap(&rotated, to);
-
     clearBitmap(&rotated);
     fclose(to);
     return 0;
@@ -98,7 +109,7 @@ int main(int argc, char **argv)
     if (!isCorrectArgs(argc))
     {
         error("Not enough required parameters");
-        return -1;
+        return 9;
     }
 
     if (strcmp(argv[1], "crop-rotate") == 0)
