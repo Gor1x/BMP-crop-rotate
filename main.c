@@ -28,8 +28,26 @@ static void getParams(size_t *x, size_t *y, size_t *width, size_t *height, char 
     *height = toInt(argv[7]);
 }
 
+
+static bool isCorrectParameters(Bitmap *bitmap, size_t x, size_t y, size_t width, size_t height)
+{
+    return x >= 0 && y >= 0 && width >= 0 && height >= 0 &&
+                                        x + width <= bitmap->width && y + height <= bitmap->height;
+}
+
+static bool isCorrectCropRotateArgs(int argc, char **argv)
+{
+    return argc == 8;
+}
+
 int cropRotate(int argc, char **argv)
 {
+    if (!isCorrectCropRotateArgs(argc, argv))
+    {
+        error("Not enough required parameters for crop-rotate");
+        return 4;
+    }
+
     Bitmap bitmap;
     FILE *file = fopen(argv[2], "rb");
 
@@ -41,36 +59,40 @@ int cropRotate(int argc, char **argv)
 
     readBitmap(&bitmap, file);
     fclose(file);
-    debug("Bitmap is read");
 
     Bitmap result;
     size_t x, y, width, height;
     getParams(&x, &y, &width, &height, argv);
+
+    if (!isCorrectParameters(&bitmap, x, y, width, height))
+    {
+        error("Parameters are incorrect");
+        clearBitmap(&bitmap);
+        return 3;
+    }
+
     crop(&bitmap, x, y, width, height, &result);
     clearBitmap(&bitmap);
 
-    debug("Cropped");
-
-
-    FILE *to = fopen("../lena_228.bmp", "wb");
+    FILE *to = fopen(argv[3], "wb");
     if (to == NULL)
     {
         error("Can't open output file");
         clearBitmap(&result);
         return 2;
     }
+
     Bitmap rotated;
     rotate(&result, &rotated);
     clearBitmap(&result);
 
-
-    debug("Rotated");
-
     saveBitmap(&rotated, to);
+
     clearBitmap(&rotated);
     fclose(to);
     return 0;
 }
+
 
 int main(int argc, char **argv)
 {
@@ -85,6 +107,7 @@ int main(int argc, char **argv)
         int result = cropRotate(argc, argv);
         if (result != 0)
             return result;
+        printf("Done!\n");
     }
     else if (strcmp(argv[1], "insert") == 0)
     {
