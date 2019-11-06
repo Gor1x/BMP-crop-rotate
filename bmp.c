@@ -26,7 +26,7 @@ static void scanSize(Bitmap *bitmap, FILE *file)
     fread(&bitmap->width, 4, 1, file);
     fread(&bitmap->height, 4, 1, file);
 
-    bitmap->fileWidth = (bitmap->width + 3) / 4 * 4;
+    bitmap->widthBytes = (bitmap->width * 3 + 3) / 4 * 4;
 }
 
 static void initPixelArray(Bitmap *bitmap)
@@ -34,23 +34,45 @@ static void initPixelArray(Bitmap *bitmap)
     bitmap->picture = (Pixel**)malloc(bitmap->height * sizeof(Pixel*));
     for (size_t i = 0; i < bitmap->height; i++)
     {
-        bitmap->picture[i] = (Pixel*)calloc(bitmap->fileWidth, sizeof(Pixel));
+        bitmap->picture[i] = (Pixel*)calloc(bitmap->widthBytes, sizeof(Pixel));
     }
 }
 
-static void swap(void **a, void **b)
+static void printPixel(Pixel a, FILE *file)
 {
-    void *tmp = *a;
-    *a = *b;
-    *b = tmp;
+    for (int i = 0; i < 3; i++)
+        fprintf(file, "%d ", (int)a.data[i]);
+    fprintf(file, " ");
 }
 
-static void reverse(void **arr, size_t length)
+void printPixelArray(Bitmap *bitmap, FILE *file)
 {
-    for (int i = 0; i * 2 < length; i++)
+    size_t height = bitmap->height;
+    size_t width = bitmap->width;
+
+    for (size_t i = 0; i < height; i++)
     {
-        swap(&arr[i], &arr[length - i - 1]);
+        for (size_t j = 0; j < width; j++)
+        {
+            printPixel(bitmap->picture[i][j], file);
+            fprintf(file, " | ");
+        }
+        fprintf(file, "\n");
     }
+}
+
+static void reverse(Pixel **arr, size_t height, size_t width)
+{
+    for (size_t i = 0; i * 2 < height; i++)
+    {
+        for (size_t j = 0; j < width; j++)
+        {
+            Pixel tmp = arr[i][j];
+            arr[i][j] = arr[height - i - 1][j];
+            arr[height - i - 1][j] = tmp;
+        }
+    }
+
 }
 
 static void scanPicture(Bitmap *bitmap, FILE *file)
@@ -58,12 +80,13 @@ static void scanPicture(Bitmap *bitmap, FILE *file)
     fseek(file, 54, SEEK_SET);
     for (size_t i = 0; i < bitmap->height; i++)
     {
-        for (size_t j = 0; j < bitmap->fileWidth; j++)
+        for (size_t j = 0; j < bitmap->width; j++)
         {
             fread(&bitmap->picture[i][j], PIXEL_SIZE, 1, file);
         }
+        fseek(file, bitmap->widthBytes - bitmap->width * 3, SEEK_CUR);
     }
-    reverse((void **)bitmap->picture, bitmap->height);
+    reverse(bitmap->picture, bitmap->height, bitmap->width);
 }
 
 void readBitmap(Bitmap *bitmap, FILE *file)
@@ -89,14 +112,15 @@ static void initBitmapSize(Bitmap *bitmap, size_t width, size_t height)
 {
     bitmap->height = height;
     bitmap->width = width;
-    bitmap->fileWidth = (width + 3) / 4 * 4;
+    bitmap->widthBytes = (width * 3 + 3) / 4 * 4;
 }
 
 static void initBitmapHeader(Bitmap *bitmap, Bitmap *dest)
 {
     dest->header = bitmap->header;
 
-    size_t pixelSize = dest->fileWidth * dest->height * PIXEL_SIZE;
+    size_t pixelSize = dest->widthBytes * dest->height;
+
     memcpy(&dest->header.biSizeImage, &pixelSize, sizeof(dest->header.biSizeImage));
 
     size_t fileSize = pixelSize + 54;
@@ -130,20 +154,28 @@ static void printHeader(Bitmap *bitmap, FILE *file)
     fwrite(&header->biOtherSecond, sizeof(header->biOtherSecond), 1, file);
 }
 
+static void printZeros(size_t count, FILE *file)
+{
+    for (size_t i = 0; i < count; i++)
+    {
+        int a = 0;
+        fwrite(&a, 1, 1, file);
+    }
+}
+
 static void printPicture(Bitmap *bitmap, FILE *file)
 {
     fseek(file, 54, SEEK_SET);
-    reverse((void**)bitmap->picture, bitmap->height);
-
+    reverse(bitmap->picture, bitmap->height, bitmap->width);
     for (size_t i = 0; i < bitmap->height; i++)
     {
-        for (size_t j = 0; j < bitmap->fileWidth; j++)
+        for (size_t j = 0; j < bitmap->width; j++)
         {
-            fwrite(&bitmap->picture[i][j], PIXEL_SIZE, 1, file);
+            fwrite(&bitmap->picture[i][j].data, PIXEL_SIZE, 1, file);
         }
+        printZeros(bitmap->widthBytes - (bitmap->width * PIXEL_SIZE), file);
     }
-
-    reverse((void**)bitmap->picture, bitmap->height);
+    reverse(bitmap->picture, bitmap->height, bitmap->width);
 }
 
 void saveBitmap(Bitmap *bitmap, FILE *file)
@@ -154,7 +186,6 @@ void saveBitmap(Bitmap *bitmap, FILE *file)
 
 static void clearPicture(Bitmap *bitmap)
 {
-    reverse((void**)bitmap->picture, bitmap->height);
     free(bitmap->picture[0]);
     free(bitmap->picture);
 }
@@ -164,7 +195,7 @@ void clearBitmap(Bitmap *bitmap)
     clearPicture(bitmap);
 }
 
-static void rotatePixels(Bitmap *bitmap, Bitmap *dest)
+static void rotatePixels(const Bitmap *bitmap, Bitmap *dest)
 {
     for (size_t i = 0; i < bitmap->height; i++)
     {
@@ -175,7 +206,7 @@ static void rotatePixels(Bitmap *bitmap, Bitmap *dest)
     }
 }
 
-void rotate(Bitmap* bitmap, Bitmap *dest)
+void rotate(const Bitmap* bitmap, Bitmap *dest)
 {
     initBitmapSize(dest, bitmap->height, bitmap->width);
     initBitmapHeader(bitmap, dest);

@@ -36,7 +36,7 @@ typedef struct Bitmap_s
 {
     size_t width;
     size_t height;
-    size_t fileWidth;
+    size_t widthBytes;
     BitmapData header;
     Pixel** picture;
 
@@ -47,8 +47,7 @@ static void scanHeader(Bitmap *bitmap, FILE *file);
 static void scanSize(Bitmap *bitmap, FILE *file);
 static void initPixelArray(Bitmap *bitmap);
 static void scanPicture(Bitmap *bitmap, FILE *file);
-static void swap(void **a, void **b);
-static void reverse(void **arr, size_t length);
+static void reverse(Pixel **arr, size_t height, size_t width);
 
 void readBitmap(Bitmap *bitmap, FILE *file);
 
@@ -70,9 +69,10 @@ static void clearPicture(Bitmap *bitmap);
 
 void clearBitmap(Bitmap *bitmap);
 
+static void rotatePixels(const Bitmap *bitmap, Bitmap *dest);
 
-static void rotatePixels(Bitmap *bitmap, Bitmap *dest);
+void rotate(const Bitmap* bitmap, Bitmap *dest);
 
-void rotate(Bitmap* bitmap, Bitmap *dest);
+void printPixelArray(Bitmap *bitmap, FILE *file);
 
 #endif //HW_01_BMP_H
