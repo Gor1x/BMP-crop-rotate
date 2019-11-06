@@ -6,6 +6,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_C
   "/home/egor/CLionProjects/HW_01/bmp.c" "/home/egor/CLionProjects/HW_01/cmake-build-debug/CMakeFiles/HW_01.dir/bmp.c.o"
   "/home/egor/CLionProjects/HW_01/main.c" "/home/egor/CLionProjects/HW_01/cmake-build-debug/CMakeFiles/HW_01.dir/main.c.o"
+  "/home/egor/CLionProjects/HW_01/stego.c" "/home/egor/CLionProjects/HW_01/cmake-build-debug/CMakeFiles/HW_01.dir/stego.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

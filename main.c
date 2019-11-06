@@ -1,6 +1,7 @@
 #include "stdbool.h"
 #include "bmp.h"
 #include "stdio.h"
+#include "stego.h"
 
 static void error(const char *type)
 {
@@ -38,21 +39,16 @@ static bool isCorrectCropRotateArgs(int argc)
     return argc == 8;
 }
 
-int cropRotate(int argc, char **argv) {
-    if (!isCorrectCropRotateArgs(argc)) {
-        error("Not enough required parameters for crop-rotate");
-        return 4;
-    }
-
-    Bitmap bitmap;
-    FILE *file = fopen(argv[2], "rb");
+static int getBitmapFromFile(Bitmap *bitmap, char *fileName)
+{
+    FILE *file = fopen(fileName, "rb");
 
     if (file == NULL) {
         error("Can't open input file");
         return 1;
     }
 
-    if (readBitmap(&bitmap, file) != 0)
+    if (readBitmap(bitmap, file) != 0)
     {
         fclose(file);
         error("Memory allocation failed");
@@ -60,6 +56,19 @@ int cropRotate(int argc, char **argv) {
     }
 
     fclose(file);
+    return 0;
+}
+
+int cropRotate(int argc, char **argv) {
+    if (!isCorrectCropRotateArgs(argc)) {
+        error("Not enough required parameters for crop-rotate");
+        return 4;
+    }
+
+    Bitmap bitmap;
+    int res = getBitmapFromFile(&bitmap, argv[2]);
+    if (res != 0)
+        return res;
 
     Bitmap result;
     size_t x, y, width, height;
@@ -78,6 +87,7 @@ int cropRotate(int argc, char **argv) {
         clearBitmap(&bitmap);
         return 7;
     }
+    clearBitmap(&bitmap);
 
     Bitmap rotated;
 
@@ -103,6 +113,58 @@ int cropRotate(int argc, char **argv) {
     return 0;
 }
 
+static bool isInsertParamsCorrect(int argc)
+{
+    return argc == 6;
+}
+
+int insert(int argc, char **argv)
+{
+    if (!isInsertParamsCorrect(argc))
+    {
+        error("Not enough required parameters for insert");
+        return 1;
+    }
+
+    Bitmap bitmap;
+    int result = getBitmapFromFile(&bitmap, argv[2]);
+    if (result != 0)
+        return result;
+
+    FILE *key = fopen(argv[4], "r");
+    if (key == NULL)
+    {
+        error("Failed to open key file");
+        return 16;
+    }
+
+    FILE *message = fopen(argv[5], "r");
+    if (message == NULL)
+    {
+        fclose(key);
+        error("Failed to open message file");
+        return 17;
+    }
+
+    insertStegoData(&bitmap, message, key);
+    fclose(message);
+    fclose(key);
+
+
+    FILE *to = fopen(argv[3], "wb");
+    if (to == NULL)
+    {
+        clearBitmap(&bitmap);
+        error("Failed to open output file");
+        return 18;
+    }
+
+    saveBitmap(&bitmap, to);
+    fclose(to);
+    clearBitmap(&bitmap);
+    return 0;
+}
+
 
 int main(int argc, char **argv)
 {
@@ -121,11 +183,15 @@ int main(int argc, char **argv)
     }
     else if (strcmp(argv[1], "insert") == 0)
     {
-
+        int result = insert(argc, argv);
+        if (result != 0)
+            return result;
+        printf("Your secrets was hidden");
     }
     else //extract
     {
 
+        printf("Your secrets was found");
     }
     return  0;
 }

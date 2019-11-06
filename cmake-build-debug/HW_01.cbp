@@ -87,6 +87,12 @@
 		<Unit filename="/home/egor/CLionProjects/HW_01/main.c">
 			<Option target="HW_01"/>
 		</Unit>
+		<Unit filename="/home/egor/CLionProjects/HW_01/stego.c">
+			<Option target="HW_01"/>
+		</Unit>
+		<Unit filename="/home/egor/CLionProjects/HW_01/stego.h">
+			<Option target="HW_01"/>
+		</Unit>
 		<Unit filename="/home/egor/CLionProjects/HW_01/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

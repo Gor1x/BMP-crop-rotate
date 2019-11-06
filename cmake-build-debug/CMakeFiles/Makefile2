@@ -74,12 +74,12 @@ preinstall:
 CMakeFiles/HW_01.dir/all:
 	$(MAKE) -f CMakeFiles/HW_01.dir/build.make CMakeFiles/HW_01.dir/depend
 	$(MAKE) -f CMakeFiles/HW_01.dir/build.make CMakeFiles/HW_01.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/egor/CLionProjects/HW_01/cmake-build-debug/CMakeFiles --progress-num=1,2,3 "Built target HW_01"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/egor/CLionProjects/HW_01/cmake-build-debug/CMakeFiles --progress-num=1,2,3,4 "Built target HW_01"
 .PHONY : CMakeFiles/HW_01.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/HW_01.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/egor/CLionProjects/HW_01/cmake-build-debug/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/egor/CLionProjects/HW_01/cmake-build-debug/CMakeFiles 4
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/HW_01.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/egor/CLionProjects/HW_01/cmake-build-debug/CMakeFiles 0
 .PHONY : CMakeFiles/HW_01.dir/rule

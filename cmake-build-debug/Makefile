@@ -177,6 +177,33 @@ main.c.s:
 	$(MAKE) -f CMakeFiles/HW_01.dir/build.make CMakeFiles/HW_01.dir/main.c.s
 .PHONY : main.c.s
 
+stego.o: stego.c.o
+
+.PHONY : stego.o
+
+# target to build an object file
+stego.c.o:
+	$(MAKE) -f CMakeFiles/HW_01.dir/build.make CMakeFiles/HW_01.dir/stego.c.o
+.PHONY : stego.c.o
+
+stego.i: stego.c.i
+
+.PHONY : stego.i
+
+# target to preprocess a source file
+stego.c.i:
+	$(MAKE) -f CMakeFiles/HW_01.dir/build.make CMakeFiles/HW_01.dir/stego.c.i
+.PHONY : stego.c.i
+
+stego.s: stego.c.s
+
+.PHONY : stego.s
+
+# target to generate assembly for a file
+stego.c.s:
+	$(MAKE) -f CMakeFiles/HW_01.dir/build.make CMakeFiles/HW_01.dir/stego.c.s
+.PHONY : stego.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -192,6 +219,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... stego.o"
+	@echo "... stego.i"
+	@echo "... stego.s"
 .PHONY : help
 
 

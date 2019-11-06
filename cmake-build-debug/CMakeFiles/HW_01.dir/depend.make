@@ -6,4 +6,9 @@ CMakeFiles/HW_01.dir/bmp.c.o: ../bmp.h
 
 CMakeFiles/HW_01.dir/main.c.o: ../bmp.h
 CMakeFiles/HW_01.dir/main.c.o: ../main.c
+CMakeFiles/HW_01.dir/main.c.o: ../stego.h
+
+CMakeFiles/HW_01.dir/stego.c.o: ../bmp.h
+CMakeFiles/HW_01.dir/stego.c.o: ../stego.c
+CMakeFiles/HW_01.dir/stego.c.o: ../stego.h
 

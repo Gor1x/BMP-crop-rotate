@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/HW_01.dir/bmp.c.o"
   "CMakeFiles/HW_01.dir/main.c.o"
+  "CMakeFiles/HW_01.dir/stego.c.o"
   "HW_01"
   "HW_01.pdb"
 )
