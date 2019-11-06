@@ -48,6 +48,7 @@ int cropRotate(int argc, char **argv)
     getParams(&x, &y, &width, &height, argv);
     crop(&bitmap, x, y, width, height, &result);
     clearBitmap(&bitmap);
+
     debug("Cropped");
 
     FILE *middle = fopen("../middle.bmp", "wb");
@@ -55,15 +56,14 @@ int cropRotate(int argc, char **argv)
     fclose(middle);
 
     FILE *to = fopen("../lena_228.bmp", "wb");
-
     Bitmap rotated;
     rotate(&result, &rotated);
+    clearBitmap(&result);
 
     debug("Rotated");
 
 
     saveBitmap(&rotated, to);
-    clearBitmap(&result);
     clearBitmap(&rotated);
     fclose(to);
     return 0;

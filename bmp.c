@@ -97,7 +97,7 @@ void readBitmap(Bitmap *bitmap, FILE *file)
     scanPicture(bitmap, file);
 }
 
-static void copyPixelArray(Bitmap *bitmap, Bitmap *dest, size_t x, size_t y, size_t width, size_t height)
+static void copyPixelArray(const Bitmap *bitmap, Bitmap *dest, size_t x, size_t y, size_t width, size_t height)
 {
     for (size_t i = y; i < y + height; i++)
     {
@@ -115,7 +115,7 @@ static void initBitmapSize(Bitmap *bitmap, size_t width, size_t height)
     bitmap->widthBytes = (width * 3 + 3) / 4 * 4;
 }
 
-static void initBitmapHeader(Bitmap *bitmap, Bitmap *dest)
+static void initBitmapHeader(const Bitmap *bitmap, Bitmap *dest)
 {
     dest->header = bitmap->header;
 
@@ -130,7 +130,7 @@ static void initBitmapHeader(Bitmap *bitmap, Bitmap *dest)
     memcpy(&dest->header.biHeight, &dest->height, sizeof(dest->header.biHeight));
 }
 
-int crop(Bitmap *bitmap, size_t x, size_t y, size_t width, size_t height, Bitmap *dest)
+int crop(const Bitmap *bitmap, size_t x, size_t y, size_t width, size_t height, Bitmap *dest)
 {
     initBitmapSize(dest, width, height);
     initBitmapHeader(bitmap, dest);

@@ -51,12 +51,11 @@ static void reverse(Pixel **arr, size_t height, size_t width);
 
 void readBitmap(Bitmap *bitmap, FILE *file);
 
-
-static void copyPixelArray(Bitmap *bitmap, Bitmap *dest, size_t x, size_t y, size_t width, size_t height);
+static void copyPixelArray(const Bitmap *bitmap, Bitmap *dest, size_t x, size_t y, size_t width, size_t height);
 static void initBitmapSize(Bitmap *bitmap, size_t width, size_t height);
-static void initBitmapHeader(Bitmap *bitmap, Bitmap *dest);
+static void initBitmapHeader(const Bitmap *bitmap, Bitmap *dest);
 
-int crop(Bitmap *bitmap, size_t x, size_t y, size_t width, size_t height, Bitmap *dest);
+int crop(const Bitmap *bitmap, size_t x, size_t y, size_t width, size_t height, Bitmap *dest);
 
 
 static void printHeader(Bitmap *bitmap, FILE *file);
