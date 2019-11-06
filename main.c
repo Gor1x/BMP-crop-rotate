@@ -35,8 +35,8 @@ int cropRotate(int argc, char **argv)
 
     if (file == NULL)
     {
-        error("Can't open the file");
-        return -1;
+        error("Can't open input file");
+        return 1;
     }
 
     readBitmap(&bitmap, file);
@@ -51,17 +51,20 @@ int cropRotate(int argc, char **argv)
 
     debug("Cropped");
 
-    FILE *middle = fopen("../middle.bmp", "wb");
-    saveBitmap(&result, middle);
-    fclose(middle);
 
     FILE *to = fopen("../lena_228.bmp", "wb");
+    if (to == NULL)
+    {
+        error("Can't open output file");
+        clearBitmap(&result);
+        return 2;
+    }
     Bitmap rotated;
     rotate(&result, &rotated);
     clearBitmap(&result);
 
-    debug("Rotated");
 
+    debug("Rotated");
 
     saveBitmap(&rotated, to);
     clearBitmap(&rotated);

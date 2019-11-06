@@ -130,18 +130,17 @@ static void initBitmapHeader(const Bitmap *bitmap, Bitmap *dest)
     memcpy(&dest->header.biHeight, &dest->height, sizeof(dest->header.biHeight));
 }
 
-int crop(const Bitmap *bitmap, size_t x, size_t y, size_t width, size_t height, Bitmap *dest)
+void crop(const Bitmap *bitmap, size_t x, size_t y, size_t width, size_t height, Bitmap *dest)
 {
     initBitmapSize(dest, width, height);
     initBitmapHeader(bitmap, dest);
     initPixelArray(dest);
     copyPixelArray(bitmap, dest, x, y, width, height);
-    return 0;
 }
 
-static void printHeader(Bitmap *bitmap, FILE *file)
+static void printHeader(const Bitmap *bitmap, FILE *file)
 {
-    BitmapData *header = &bitmap->header;
+    const BitmapData *header = &bitmap->header;
 
     fwrite(&header->bfType, sizeof(header->bfType), 1, file);
     fwrite(&header->bfSizeFile, sizeof(header->bfSizeFile), 1, file);
@@ -163,7 +162,7 @@ static void printZeros(size_t count, FILE *file)
     }
 }
 
-static void printPicture(Bitmap *bitmap, FILE *file)
+static void printPicture(const Bitmap *bitmap, FILE *file)
 {
     fseek(file, 54, SEEK_SET);
     reverse(bitmap->picture, bitmap->height, bitmap->width);
@@ -178,7 +177,7 @@ static void printPicture(Bitmap *bitmap, FILE *file)
     reverse(bitmap->picture, bitmap->height, bitmap->width);
 }
 
-void saveBitmap(Bitmap *bitmap, FILE *file)
+void saveBitmap(const Bitmap *bitmap, FILE *file)
 {
     printHeader(bitmap, file);
     printPicture(bitmap, file);
