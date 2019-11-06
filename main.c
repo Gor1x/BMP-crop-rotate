@@ -59,7 +59,7 @@ static int getBitmapFromFile(Bitmap *bitmap, char *fileName)
     return 0;
 }
 
-int cropRotate(int argc, char **argv) {
+static int cropRotate(int argc, char **argv) {
     if (!isCorrectCropRotateArgs(argc)) {
         error("Not enough required parameters for crop-rotate");
         return 4;
@@ -118,7 +118,7 @@ static bool isInsertParamsCorrect(int argc)
     return argc == 6;
 }
 
-int insert(int argc, char **argv)
+static int insert(int argc, char **argv)
 {
     if (!isInsertParamsCorrect(argc))
     {
@@ -146,7 +146,15 @@ int insert(int argc, char **argv)
         return 17;
     }
 
-    insertStegoData(&bitmap, message, key);
+    if (insertStegoData(&bitmap, message, key) != 0)
+    {
+        clearBitmap(&bitmap);
+        fclose(message);
+        fclose(key);
+        error("Can't insert data");
+        return 21;
+    }
+
     fclose(message);
     fclose(key);
 
@@ -165,6 +173,22 @@ int insert(int argc, char **argv)
     return 0;
 }
 
+static bool isEraseParamsCorrect(int argc)
+{
+    return argc == 5;
+}
+
+static int erase(int argc, char **argv)
+{
+    if (!isEraseParamsCorrect(argc))
+    {
+        error("Not enough required parameters for erase");
+        return 1;
+    }
+    Bitmap bitmap;
+    getBitmapFromFile(&bitmap, argv[2]);
+
+}
 
 int main(int argc, char **argv)
 {

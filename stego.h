@@ -3,8 +3,8 @@
 
 #include "bmp.h"
 
-void insertStegoData(Bitmap *bitmap, FILE* message, FILE *key);
+int insertStegoData(Bitmap *bitmap, FILE* message, FILE *key);
 
-void extractStegoData(const Bitmap *bitmap, FILE *key);
+void extractStegoData(const Bitmap *bitmap, FILE *key, FILE *message);
 
 #endif //HW_01_STEGO_H
