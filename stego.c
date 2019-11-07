@@ -1,5 +1,7 @@
 #include "stego.h"
 
+const int BITS_IN_SYMBOL = 5;
+
 static char getSymbol(int x)
 {
     if (x < 26)
@@ -33,7 +35,7 @@ void extractStegoData(const Bitmap *bitmap, FILE *key, FILE *message)
         int a = 0;
 
         bool isEnd = false;
-        for (size_t j = 0; j < 5; j++)
+        for (size_t j = 0; j < BITS_IN_SYMBOL; j++)
         {
             if (fscanf(key, "%zu %zu %c", &x, &y, &color) != 3)
             {
@@ -60,7 +62,7 @@ static int getCode(char x)
         return 28;
 }
 
-static int setBit(Pixel *pixel, char color, int bit)
+static void setBit(Pixel *pixel, char color, int bit)
 {
     size_t pos;
     if (color == 'R')

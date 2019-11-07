@@ -20,7 +20,8 @@ static void scanHeader(Bitmap *bitmap, FILE *file)
 
 static void scanSize(Bitmap *bitmap, FILE *file)
 {
-    fseek(file, 18, SEEK_SET);
+    fseek(file, WIDTH_POSITION, SEEK_SET);
+
     bitmap->width = bitmap->height = 0;
 
     fread(&bitmap->width, 4, 1, file);
@@ -58,29 +59,6 @@ static int initPixelArray(Bitmap *bitmap)
     }
 
     return 0;
-}
-
-static void printPixel(Pixel a, FILE *file)
-{
-    for (int i = 0; i < 3; i++)
-        fprintf(file, "%d ", (int)a.data[i]);
-    fprintf(file, " ");
-}
-
-void printBitmapPixelArray(Bitmap *bitmap, FILE *file)
-{
-    size_t height = bitmap->height;
-    size_t width = bitmap->width;
-
-    for (size_t i = 0; i < height; i++)
-    {
-        for (size_t j = 0; j < width; j++)
-        {
-            printPixel(bitmap->picture[i][j], file);
-            fprintf(file, " | ");
-        }
-        fprintf(file, "\n");
-    }
 }
 
 static void reverse(Pixel **arr, size_t height, size_t width)
