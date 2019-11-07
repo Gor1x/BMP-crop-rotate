@@ -1,5 +1,12 @@
 #include "bmp.h"
 
+const size_t WIDTH_POSITION = 18;
+
+static size_t normalizeTo4(size_t x)
+{
+    return (x + 3) / 4 * 4;
+}
+
 static void scanHeader(Bitmap *bitmap, FILE *file)
 {
     fseek(file, 0, SEEK_SET);
@@ -27,9 +34,8 @@ static void scanSize(Bitmap *bitmap, FILE *file)
     fread(&bitmap->width, 4, 1, file);
     fread(&bitmap->height, 4, 1, file);
 
-    bitmap->widthBytes = (bitmap->width * 3 + 3) / 4 * 4;
+    bitmap->widthBytes = normalizeTo4(bitmap->width * PIXEL_SIZE);
 }
-
 
 
 static void freePictureMemory(Bitmap *bitmap, size_t to)
@@ -72,19 +78,18 @@ static void reverse(Pixel **arr, size_t height, size_t width)
             arr[height - i - 1][j] = tmp;
         }
     }
-
 }
 
 static void scanPicture(Bitmap *bitmap, FILE *file)
 {
-    fseek(file, 54, SEEK_SET);
+    fseek(file, sizeof(bitmap->header), SEEK_SET);
     for (size_t i = 0; i < bitmap->height; i++)
     {
         for (size_t j = 0; j < bitmap->width; j++)
         {
             fread(&bitmap->picture[i][j], PIXEL_SIZE, 1, file);
         }
-        fseek(file, (int)bitmap->widthBytes - (int)bitmap->width * 3, SEEK_CUR);
+        fseek(file, (int)bitmap->widthBytes - (int)bitmap->width * PIXEL_SIZE, SEEK_CUR);
     }
     reverse(bitmap->picture, bitmap->height, bitmap->width);
 }
@@ -116,7 +121,7 @@ static void initBitmapSize(Bitmap *bitmap, size_t width, size_t height)
 {
     bitmap->height = height;
     bitmap->width = width;
-    bitmap->widthBytes = (width * 3 + 3) / 4 * 4;
+    bitmap->widthBytes = normalizeTo4(bitmap->width * PIXEL_SIZE);
 }
 
 static void initBitmapHeader(const Bitmap *bitmap, Bitmap *dest)
@@ -127,7 +132,7 @@ static void initBitmapHeader(const Bitmap *bitmap, Bitmap *dest)
 
     memcpy(&dest->header.biSizeImage, &pixelSize, sizeof(dest->header.biSizeImage));
 
-    size_t fileSize = pixelSize + 54;
+    size_t fileSize = pixelSize + sizeof(dest->header);
     memcpy(&dest->header.bfSizeFile, &fileSize, sizeof(dest->header.bfSizeFile));
 
     memcpy(&dest->header.biWidth, &dest->width, sizeof(dest->header.biWidth));
@@ -172,7 +177,7 @@ static void printZeros(size_t count, FILE *file)
 
 static void printPicture(const Bitmap *bitmap, FILE *file)
 {
-    fseek(file, 54, SEEK_SET);
+    fseek(file, sizeof(bitmap->header), SEEK_SET);
     reverse(bitmap->picture, bitmap->height, bitmap->width);
     for (size_t i = 0; i < bitmap->height; i++)
     {

@@ -8,8 +8,6 @@
 
 #define PIXEL_SIZE 3
 
-const size_t WIDTH_POSITION = 18;
-
 typedef struct Pixel_s
 {
     unsigned char data[PIXEL_SIZE];

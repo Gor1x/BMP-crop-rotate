@@ -1,6 +1,6 @@
 #include "stego.h"
 
-const int BITS_IN_SYMBOL = 5;
+const size_t BITS_IN_SYMBOL = 5;
 
 static char getSymbol(int x)
 {
