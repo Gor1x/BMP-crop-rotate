@@ -78,7 +78,7 @@ static void scanPicture(Bitmap *bitmap, FILE *file)
 
     for (size_t i = 0; i < bitmap->height; i++)
     {
-        fread(&bitmap->picture[i][0], PIXEL_SIZE, bitmap->width, file);
+        fread(bitmap->picture[i], PIXEL_SIZE, bitmap->width, file);
         fseek(file, (int)bitmap->widthBytes - (int)bitmap->width * PIXEL_SIZE, SEEK_CUR);
     }
 
@@ -169,16 +169,15 @@ static void printZeros(size_t count, FILE *file)
 static void printPicture(const Bitmap *bitmap, FILE *file)
 {
     fseek(file, sizeof(bitmap->header), SEEK_SET);
-    reverse(bitmap->picture, bitmap->height, bitmap->width);
+
     for (size_t i = 0; i < bitmap->height; i++)
     {
         for (size_t j = 0; j < bitmap->width; j++)
         {
-            fwrite(&bitmap->picture[i][j].data, PIXEL_SIZE, 1, file);
+            fwrite(&bitmap->picture[bitmap->height - i - 1][j].data, PIXEL_SIZE, 1, file);
         }
         printZeros(bitmap->widthBytes - (bitmap->width * PIXEL_SIZE), file);
     }
-    reverse(bitmap->picture, bitmap->height, bitmap->width);
 }
 
 void saveBitmap(const Bitmap *bitmap, FILE *file)
