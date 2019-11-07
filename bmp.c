@@ -75,14 +75,13 @@ static void reverse(Pixel **arr, size_t height, size_t width)
 static void scanPicture(Bitmap *bitmap, FILE *file)
 {
     fseek(file, sizeof(bitmap->header), SEEK_SET);
+
     for (size_t i = 0; i < bitmap->height; i++)
     {
-        for (size_t j = 0; j < bitmap->width; j++)
-        {
-            fread(&bitmap->picture[i][j], PIXEL_SIZE, 1, file);
-        }
+        fread(&bitmap->picture[i][0], PIXEL_SIZE, bitmap->width, file);
         fseek(file, (int)bitmap->widthBytes - (int)bitmap->width * PIXEL_SIZE, SEEK_CUR);
     }
+
     reverse(bitmap->picture, bitmap->height, bitmap->width);
 }
 
