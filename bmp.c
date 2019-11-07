@@ -1,6 +1,8 @@
 #include "bmp.h"
 
 const size_t WIDTH_POSITION = 18;
+const size_t WIDTH_BYTES_SIZE = 4;
+const size_t HEIGHT_BYTES_SIZE = 4;
 
 static size_t normalizeTo4(size_t x)
 {
@@ -31,20 +33,10 @@ static void scanSize(Bitmap *bitmap, FILE *file)
 
     bitmap->width = bitmap->height = 0;
 
-    fread(&bitmap->width, 4, 1, file);
-    fread(&bitmap->height, 4, 1, file);
+    fread(&bitmap->width, WIDTH_BYTES_SIZE, 1, file);
+    fread(&bitmap->height, HEIGHT_BYTES_SIZE, 1, file);
 
     bitmap->widthBytes = normalizeTo4(bitmap->width * PIXEL_SIZE);
-}
-
-
-static void freePictureMemory(Bitmap *bitmap, size_t to)
-{
-    for (size_t j = 0; j < to; j++)
-    {
-        free(bitmap->picture[j]);
-    }
-    free(bitmap->picture);
 }
 
 static int initPixelArray(Bitmap *bitmap)
@@ -54,16 +46,16 @@ static int initPixelArray(Bitmap *bitmap)
     if (bitmap->picture == NULL)
         return 1;
 
-    for (size_t i = 0; i < bitmap->height; i++)
+    bitmap->picture[0] = (Pixel*)calloc(bitmap->width * bitmap->height, sizeof(Pixel));
+    if (bitmap->picture[0] == NULL)
     {
-        bitmap->picture[i] = (Pixel*)calloc(bitmap->widthBytes, sizeof(Pixel));
-        if (bitmap->picture[i] == NULL)
-        {
-            freePictureMemory(bitmap, i);
-            return 1;
-        }
+        free(bitmap->picture);
+        return 1;
     }
-
+    for (size_t i = 1; i < bitmap->height; i++)
+    {
+        bitmap->picture[i] = bitmap->picture[i - 1] + bitmap->width;
+    }
     return 0;
 }
 
@@ -198,7 +190,8 @@ void saveBitmap(const Bitmap *bitmap, FILE *file)
 
 void clearBitmap(Bitmap *bitmap)
 {
-    freePictureMemory(bitmap, bitmap->height);
+    free(bitmap->picture[0]);
+    free(bitmap->picture);
 }
 
 static void rotatePixels(const Bitmap *bitmap, Bitmap *dest)
