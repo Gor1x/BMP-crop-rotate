@@ -31,6 +31,7 @@ static int initPixelArray(Bitmap *bitmap)
         return 1;
 
     bitmap->picture[0] = (Pixel*)malloc(bitmap->widthBytes * bitmap->height);
+    memset(bitmap->picture[0], 0, bitmap->widthBytes * bitmap->height);
 
     if (bitmap->picture[0] == NULL)
     {
@@ -125,38 +126,18 @@ int crop(const Bitmap *bitmap, size_t x, size_t y, size_t width, size_t height, 
 
 static void printHeader(const Bitmap *bitmap, FILE *file)
 {
-    const BitmapData *header = &bitmap->header;
-/*
-    fwrite(&header->bfType, sizeof(header->bfType), 1, file);
-    fwrite(&header->bfSizeFile, sizeof(header->bfSizeFile), 1, file);
-    fwrite(&header->bfHeaderOtherFirst, sizeof(header->bfHeaderOtherFirst), 1, file);
-
-    fwrite(&header->biWidth, sizeof(header->biWidth), 1, file);
-    fwrite(&header->biHeight, sizeof(header->biHeight), 1, file);
-    fwrite(&header->biOtherFirst, sizeof(header->biOtherFirst), 1, file);
-    fwrite(&header->biSizeImage, sizeof(header->biSizeImage), 1, file);
-    fwrite(&header->biOtherSecond, sizeof(header->biOtherSecond), 1, file);*/
-    fwrite(header, HEADER_SIZE, 1, file);
-}
-
-static void printZeros(size_t count, FILE *file)
-{
-    unsigned int a = 0;
-    fwrite(&a, count, 1, file);
+    fwrite(&bitmap->header, HEADER_SIZE, 1, file);
 }
 
 static void printPicture(const Bitmap *bitmap, FILE *file)
 {
     fseek(file, sizeof(bitmap->header), SEEK_SET);
 
-    for (size_t i = 0; i < bitmap->height; i++)
-    {
-        for (size_t j = 0; j < bitmap->width; j++)
-        {
-            fwrite(&bitmap->picture[bitmap->height - i - 1][j].data, PIXEL_SIZE, 1, file);
-        }
-        printZeros(bitmap->widthBytes - (bitmap->width * PIXEL_SIZE), file);
-    }
+    reverse(bitmap->picture, bitmap->height, bitmap->width);
+
+    fwrite(&bitmap->picture[0][0], bitmap->height * bitmap->widthBytes, 1, file);
+
+    reverse(bitmap->picture, bitmap->height, bitmap->width);
 }
 
 void saveBitmap(const Bitmap *bitmap, FILE *file)

@@ -12,6 +12,7 @@ static const size_t WIDTH_BYTES_SIZE = 4;
 static const size_t HEIGHT_BYTES_SIZE = 4;
 static const size_t HEADER_SIZE = 54;
 
+
 typedef struct Pixel_s
 {
     unsigned char data[3];
@@ -32,6 +33,7 @@ typedef struct BitmapData_s
     char biOtherFirst[8]; //biPlanes, biBitCount, biCompression
     char biSizeImage[4]; //Changing
     char biOtherSecond[16]; //biXPelsPerMeters, biYPelsPerMeter, biClrUsed, biClrImportant
+
 }  __attribute__((packed)) BitmapData;
 
 typedef struct Bitmap_s
@@ -43,7 +45,6 @@ typedef struct Bitmap_s
     Pixel** picture;
 
 } Bitmap;
-
 
 int readBitmap(Bitmap *bitmap, FILE *file);
 
