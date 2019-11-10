@@ -159,11 +159,8 @@ static void printHeader(const Bitmap *bitmap, FILE *file)
 
 static void printZeros(size_t count, FILE *file)
 {
-    for (size_t i = 0; i < count; i++)
-    {
-        int a = 0;
-        fwrite(&a, 1, 1, file);
-    }
+    unsigned int a = 0;
+    fwrite(&a, count, 1, file);
 }
 
 static void printPicture(const Bitmap *bitmap, FILE *file)
@@ -198,7 +195,7 @@ static void rotatePixels(const Bitmap *bitmap, Bitmap *dest)
     {
         for (size_t j = 0; j < bitmap->width; j++)
         {
-            dest->picture[bitmap->width - j - 1][i] = bitmap->picture[i][j];
+            dest->picture[j][bitmap->height - i - 1] = bitmap->picture[i][j];
         }
     }
 }
