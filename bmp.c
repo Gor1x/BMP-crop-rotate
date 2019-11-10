@@ -1,8 +1,5 @@
 #include "bmp.h"
 
-const size_t WIDTH_POSITION = 18;
-const size_t WIDTH_BYTES_SIZE = 4;
-const size_t HEIGHT_BYTES_SIZE = 4;
 
 static size_t normalizeTo4(size_t x)
 {
@@ -12,19 +9,7 @@ static size_t normalizeTo4(size_t x)
 static void scanHeader(Bitmap *bitmap, FILE *file)
 {
     fseek(file, 0, SEEK_SET);
-    BitmapData *header = &bitmap->header;
-
-    //HEADER
-    fread(header->bfType, sizeof(header->bfType), 1, file);
-    fread(header->bfSizeFile, sizeof(header->bfSizeFile), 1, file);
-    fread(header->bfHeaderOtherFirst, sizeof(header->bfHeaderOtherFirst), 1, file);
-
-    //INFO
-    fread(header->biWidth, sizeof(header->biWidth), 1, file);
-    fread(header->biHeight, sizeof(header->biHeight), 1, file);
-    fread(header->biOtherFirst, sizeof(header->biOtherFirst), 1, file);
-    fread(header->biSizeImage, sizeof(header->biSizeImage), 1, file);
-    fread(header->biOtherSecond, sizeof(header->biOtherSecond), 1, file);
+    fread(&bitmap->header, HEADER_SIZE, 1, file);
 }
 
 static void scanSize(Bitmap *bitmap, FILE *file)

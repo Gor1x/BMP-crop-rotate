@@ -6,11 +6,15 @@
 #include "stdlib.h"
 #include "string.h"
 
-#define PIXEL_SIZE 3
+static const size_t PIXEL_SIZE = 3;
+static const size_t WIDTH_POSITION = 18;
+static const size_t WIDTH_BYTES_SIZE = 4;
+static const size_t HEIGHT_BYTES_SIZE = 4;
+static const size_t HEADER_SIZE = 54;
 
 typedef struct Pixel_s
 {
-    unsigned char data[PIXEL_SIZE];
+    unsigned char data[3];
 } Pixel;
 
 typedef struct BitmapData_s
@@ -28,7 +32,7 @@ typedef struct BitmapData_s
     char biOtherFirst[8]; //biPlanes, biBitCount, biCompression
     char biSizeImage[4]; //Changing
     char biOtherSecond[16]; //biXPelsPerMeters, biYPelsPerMeter, biClrUsed, biClrImportant
-} BitmapData;
+}  __attribute__((packed)) BitmapData;
 
 typedef struct Bitmap_s
 {
