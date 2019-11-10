@@ -27,19 +27,20 @@ static void scanSize(Bitmap *bitmap, FILE *file)
 static int initPixelArray(Bitmap *bitmap)
 {
     bitmap->picture = (Pixel**)malloc(bitmap->height * sizeof(Pixel*));
-
     if (bitmap->picture == NULL)
         return 1;
 
-    bitmap->picture[0] = (Pixel*)calloc(bitmap->width * bitmap->height, sizeof(Pixel));
+    bitmap->picture[0] = (Pixel*)malloc(bitmap->widthBytes * bitmap->height);
+
     if (bitmap->picture[0] == NULL)
     {
         free(bitmap->picture);
         return 1;
     }
+
     for (size_t i = 1; i < bitmap->height; i++)
     {
-        bitmap->picture[i] = bitmap->picture[i - 1] + bitmap->width;
+        bitmap->picture[i] = (Pixel*)((char*)bitmap->picture[i - 1] + bitmap->widthBytes);
     }
     return 0;
 }
@@ -57,16 +58,11 @@ static void reverse(Pixel **arr, size_t height, size_t width)
     }
 }
 
+
 static void scanPicture(Bitmap *bitmap, FILE *file)
 {
     fseek(file, sizeof(bitmap->header), SEEK_SET);
-
-    for (size_t i = 0; i < bitmap->height; i++)
-    {
-        fread(bitmap->picture[i], PIXEL_SIZE, bitmap->width, file);
-        fseek(file, (int)bitmap->widthBytes - (int)bitmap->width * PIXEL_SIZE, SEEK_CUR);
-    }
-
+    fread(&bitmap->picture[0][0], 1, bitmap->widthBytes * bitmap->height, file);
     reverse(bitmap->picture, bitmap->height, bitmap->width);
 }
 

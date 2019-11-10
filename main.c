@@ -65,12 +65,12 @@ static int cropRotate(int argc, char **argv) {
         return 4;
     }
 
-    Bitmap bitmap;
+    Bitmap bitmap;  //Reading start bitmap
     int res = getBitmapFromFile(&bitmap, argv[2]);
     if (res != 0)
         return res;
 
-    Bitmap result;
+    Bitmap cropped;
     size_t x, y, width, height;
     getParams(&x, &y, &width, &height, argv);
 
@@ -81,23 +81,30 @@ static int cropRotate(int argc, char **argv) {
         return 3;
     }
 
-    if (crop(&bitmap, x, y, width, height, &result) != 0)
+    if (crop(&bitmap, x, y, width, height, &cropped) != 0) //Crop
     {
         error("Memory allocation failed");
         clearBitmap(&bitmap);
         return 7;
     }
+
+    ////
+    FILE *betweenFile = fopen("../betweenFile.bmp", "wb");
+    saveBitmap(&cropped, betweenFile);
+    fclose(betweenFile);
+    /////
+
     clearBitmap(&bitmap);
 
     Bitmap rotated;
 
-    if (rotate(&result, &rotated) != 0)
+    if (rotate(&cropped, &rotated) != 0) //Rotate
     {
-        clearBitmap(&result);
+        clearBitmap(&cropped);
         error("Memory allocation failed");
         return 7;
     }
-    clearBitmap(&result);
+    clearBitmap(&cropped);
 
     FILE *to = fopen(argv[3], "wb");
     if (to == NULL)
