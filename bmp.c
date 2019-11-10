@@ -126,7 +126,7 @@ int crop(const Bitmap *bitmap, size_t x, size_t y, size_t width, size_t height, 
 static void printHeader(const Bitmap *bitmap, FILE *file)
 {
     const BitmapData *header = &bitmap->header;
-
+/*
     fwrite(&header->bfType, sizeof(header->bfType), 1, file);
     fwrite(&header->bfSizeFile, sizeof(header->bfSizeFile), 1, file);
     fwrite(&header->bfHeaderOtherFirst, sizeof(header->bfHeaderOtherFirst), 1, file);
@@ -135,7 +135,8 @@ static void printHeader(const Bitmap *bitmap, FILE *file)
     fwrite(&header->biHeight, sizeof(header->biHeight), 1, file);
     fwrite(&header->biOtherFirst, sizeof(header->biOtherFirst), 1, file);
     fwrite(&header->biSizeImage, sizeof(header->biSizeImage), 1, file);
-    fwrite(&header->biOtherSecond, sizeof(header->biOtherSecond), 1, file);
+    fwrite(&header->biOtherSecond, sizeof(header->biOtherSecond), 1, file);*/
+    fwrite(header, HEADER_SIZE, 1, file);
 }
 
 static void printZeros(size_t count, FILE *file)
