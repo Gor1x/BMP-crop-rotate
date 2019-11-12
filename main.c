@@ -88,11 +88,6 @@ static int cropRotate(int argc, char **argv) {
         return 7;
     }
 
-    ////
-    FILE *betweenFile = fopen("../betweenFile.bmp", "wb");
-    saveBitmap(&cropped, betweenFile);
-    fclose(betweenFile);
-    /////
 
     clearBitmap(&bitmap);
 
@@ -245,7 +240,9 @@ int main(int argc, char **argv)
     }
     else //extract
     {
-        extract(argc, argv);
+        int result = extract(argc, argv);
+        if (result != 0)
+            return result;
         printf("Your secrets was found");
     }
     return  0;

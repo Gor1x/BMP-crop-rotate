@@ -4,7 +4,7 @@
 static char getSymbol(int x)
 {
     if (x < 26)
-        return 'a' + x;
+        return 'A' + x;
     else if (x == 26)
         return '.';
     else if (x == 27)
@@ -51,8 +51,8 @@ void extractStegoData(const Bitmap *bitmap, FILE *key, FILE *message)
 
 static int getCode(char x)
 {
-    if ('a' <= x && x <= 'z')
-        return x - 'a';
+    if ('A' <= x && x <= 'Z')
+        return x - 'A';
     else if (x == '.')
         return 26;
     else if (x == ' ')
@@ -77,12 +77,12 @@ static void setBit(Pixel *pixel, char color, int bit)
         pos = 0;
     }
 
-    if (bit == 0)
+    if (bit == 0) //Need to be set
     {
         if (pixel->data[pos] % 2 != 0)
             pixel->data[pos] -= 1;
     }
-    else
+    else //Need to be set 0
     {
         pixel->data[pos] |= 1;
     }
@@ -99,10 +99,12 @@ static int write(Bitmap *bitmap, int number, FILE *key)
 
         if (fscanf(key,"%zu %zu %c", &x, &y, &color) != 3)
         {
+            printf("Error: Key is too short\n");
             return 1;
         }
         if (x >= bitmap->width || y >= bitmap->height)
         {
+            printf("Error: Wrong parameters of key\n");
             return 1;
         }
         setBit(&bitmap->picture[y][x], color, bit);
